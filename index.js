@@ -57,18 +57,24 @@ const store = new sessionStore({
 (async()=> {
     await db.sync();
 })()
-app.use(cors({origin:true,credentials: true}));
 
 app.use(express.json());
 app.use(session({
-    secret: process.env.SESS_SECRET,
+    secret: "ghhgghghgghghg",
     resave: false,
     saveUninitialized: true,
     store: store,
-    cookie: {
-        secure: 'auto'
-    }
+    proxy: true, // Required for Heroku & Digital Ocean (regarding X-Forwarded-For)
+    name: 'MyCoolWebAppCookieName', // This needs to be unique per-host.
+    cookie: { httpOnly: true, secure: true, maxAge: 1000 * 60 * 60 * 48, sameSite: 'none' } 
 }));
+app.use(cors({
+    credentials: true,
+    origin: 'http://localhost:3000'
+}));
+
+
+
 app.use(UsersRoute);
 app.use(StudentsRoute);
 app.use(AboutsRoute);
@@ -106,6 +112,6 @@ app.use('/Images', express.static('./Images'))
 
 
 store.sync();
-app.listen(process.env.APP_PORT, () => {
+app.listen(5000, () => {
     console.log('Server up and running...');
 })
