@@ -42,35 +42,43 @@ dotenv.config();
 
 const app = express();
 
+app.get('/', (req, res) => {
+    res
+      .status(200)
+      .send('Hello server is running')
+      .end();
+  });
+   
+  // Start the server
+  const PORT = process.env.PORT || 8080;
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
 
 // parse application/json
 app.use(bodyParser.json())
-
 const sessionStore = SequelizeStore(session.Store);
 
 const store = new sessionStore({
     db: db
 });
 
-(async()=> {
+(async()=>{
     await db.sync();
-})()
-
-app.use(express.json());
+})();
+app.set("trust proxy", true);
 app.use(session({
-    secret: "ghhgghghgghghg",
+    secret: "ghhgghgdfhdfhdfhdfhgghghg",
     resave: false,
     saveUninitialized: true,
     store: store,
-    /* proxy: true, // Required for Heroku & Digital Ocean (regarding X-Forwarded-For)
-    name: 'MyCoolWebAppCookieName', // This needs to be unique per-host.
-    cookie: { httpOnly: true, secure: true, maxAge: 1000 * 60 * 60 * 48, sameSite: 'none' }  */
+    name: 'Cookie', // This needs to be unique per-host.
+    cookie: { httpOnly: true, secure: true, maxAge: 1000 * 60 * 60 * 48, sameSite: 'none' }
 }));
+
+
 app.use(cors({
     credentials: true,
-    origin: 'http://localhost:3000'
+    origin: "http://evlisms.unaux.com"
 }));
 
 
@@ -107,11 +115,10 @@ app.use(ProspectRoute)
 
 
 
+
 // Static Images Folder
 app.use('/Images', express.static('./Images'))
-
-
 store.sync();
-app.listen(5000, () => {
-    console.log('Server up and running...');
-})
+app.listen(PORT, ()=> {
+    console.log(`Server up and running... ${PORT}`);
+});
