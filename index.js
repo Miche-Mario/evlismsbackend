@@ -78,7 +78,7 @@ app.use(session({
 
 app.use(cors({
     credentials: true,
-    origin: "https://sms.eaglevisiononline.org"
+    origin: "https://theapppp.000webhostapp.com"
 }));
 
 

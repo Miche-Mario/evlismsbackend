@@ -1,10 +1,10 @@
 import { Sequelize } from "sequelize";
 
 
-const db = new Sequelize('evlisms','admin','CvtAz3Gz', {
-    host: 'mysql-108863-0.cloudclusters.net',
+const db = new Sequelize('evlisms','evlisms','evlismss', {
+    host: 'db4free.net',
     dialect: "mysql",
-    port: 10273
+    port: 3306
 });
 
 export default db;
